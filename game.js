@@ -117,12 +117,12 @@ function makeBot(color, elite=false) {
 // First-person weapon view model
 const weaponRig = new THREE.Group();
 camera.add(weaponRig); scene.add(camera);
-const gunBody = new THREE.Mesh(new THREE.BoxGeometry(.22,.2,.72),material(0x243c55,.32,.65));
-gunBody.position.set(.42,-.32,-.72); weaponRig.add(gunBody);
+const gunBody = new THREE.Mesh(new THREE.BoxGeometry(.28,.24,.9),material(0x243c55,.32,.65));
+gunBody.position.set(.42,-.34,-.72); weaponRig.add(gunBody);
 const gunTop = new THREE.Mesh(new THREE.BoxGeometry(.12,.1,.5),mats.neon);
 gunTop.position.set(.42,-.2,-.75); weaponRig.add(gunTop);
-const barrel = new THREE.Mesh(new THREE.CylinderGeometry(.055,.07,.42,10),material(0x17283a,.25,.8));
-barrel.rotation.x=Math.PI/2; barrel.position.set(.42,-.3,-1.12); weaponRig.add(barrel);
+const barrel = new THREE.Mesh(new THREE.CylinderGeometry(.065,.085,.52,10),material(0x17283a,.25,.8));
+barrel.rotation.x=Math.PI/2; barrel.position.set(.42,-.32,-1.28); weaponRig.add(barrel);
 const grip = new THREE.Mesh(new THREE.BoxGeometry(.13,.32,.16),mats.dark);
 grip.position.set(.42,-.53,-.55); grip.rotation.x=-.2; weaponRig.add(grip);
 const muzzle = new THREE.PointLight(0x65eaff,0,5); muzzle.position.set(.42,-.3,-1.35); weaponRig.add(muzzle);
@@ -148,12 +148,13 @@ function removeBattle(){
  effects.forEach(e=>scene.remove(e)); effects=[];
 }
 function spawn(){
- camera.position.set(0,1.65,23); yaw=Math.PI; pitch=0; camera.rotation.order='YXZ'; camera.rotation.set(0,yaw,0);
+ camera.position.set(0,1.65,23); yaw=0; pitch=0; camera.rotation.order='YXZ'; camera.rotation.set(0,yaw,0);
  const count=mode==='survival'?12:mode==='practice'?2:5;
  for(let i=0;i<count;i++){
-   const a=i/count*Math.PI*2, radius=mode==='practice'?13:19;
+   const spread=(i-(count-1)/2)*4.2;
+   const depth=mode==='practice'? -12-Math.abs(spread)*.25 : -13-(i%3)*5;
    const b=makeBot([0xf15b55,0xe9b54e,0x9c75ef,0x62c88c][i%4],mode==='survival'&&i>7);
-   b.position.set(Math.cos(a)*radius,0,Math.sin(a)*radius-1);
+   b.position.set(spread,0,depth);
    scene.add(b); bots.push(b);
  }
 }
